@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.TestController">
+   <children>
+      <MenuBar>
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#exportJson" text="Export Tour as Json" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <HBox maxHeight="100.0" minHeight="80.0" prefHeight="80.0" prefWidth="1200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <GridPane prefHeight="82.0" prefWidth="1200.0" HBox.hgrow="ALWAYS">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="3.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="3.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+               </rowConstraints>
+               <children>
+                  <JFXTextArea focusColor="#27ae60" prefHeight="34.0" prefWidth="1445.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                     <GridPane.margin>
+                        <Insets bottom="40.0" left="30.0" right="30.0" top="40.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXTextArea>
+                  <JFXButton prefHeight="40.0" prefWidth="130.0" ripplerFill="#27ae60" text="Search" GridPane.columnIndex="3">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </HBox>
+      <SplitPane dividerPositions="0.1419868928402757" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1200.0" prefWidth="1200.0">
+         <items>
+            <VBox maxWidth="269.0" minWidth="300.0" prefHeight="699.0" prefWidth="300.0">
+               <children>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="20.0" minWidth="300.0" prefHeight="45.0" prefWidth="354.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <JFXTextArea editable="false" focusColor="#27ae60" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="45.0" prefHeight="45.0" prefWidth="301.0" text="Tourlist" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets left="20.0" top="5.0" />
+                           </padding>
+                        </JFXTextArea>
+                     </children>
+                  </HBox>
+                  <ListView fx:id="tourList" minWidth="-Infinity" onMouseClicked="#displayTourInfo" prefHeight="644.0" prefWidth="269.0" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <SplitPane orientation="VERTICAL" prefHeight="1000.0" prefWidth="1643.0">
+                     <items>
+                        <VBox prefHeight="500.0" prefWidth="921.0">
+                           <children>
+                              <TabPane fx:id="selectionTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                                 <tabs>
+                                    <Tab fx:id="attributesTab" onSelectionChanged="#displayTourInfo" text="Description">
+                                       <content>
+                                          <ScrollPane fitToHeight="true" fitToWidth="true">
+                                             <content>
+                                                <GridPane maxWidth="1700.0" prefHeight="1000.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="7.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="7.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="2.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="60.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="21.0" prefWidth="141.0" text="Tour Description" GridPane.columnIndex="1" GridPane.rowIndex="7" GridPane.valignment="TOP">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="21.0" prefWidth="156.0" text="Route Information" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="TOP">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="Tour Distance in km" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <JFXButton ellipsisString="" prefHeight="65.0" prefWidth="85.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Button" GridPane.columnIndex="5" GridPane.rowIndex="13" GridPane.valignment="BOTTOM">
+                                                         <graphic>
+                                                            <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="55" textAlignment="CENTER" wrappingWidth="65.5479416847229" />
+                                                         </graphic>
+                                                         <font>
+                                                            <Font />
+                                                         </font>
+                                                         <GridPane.margin>
+                                                            <Insets top="50.0" />
+                                                         </GridPane.margin>
+                                                      </JFXButton>
+                                                      <JFXButton ellipsisString="" layoutX="1459.0" layoutY="764.0" prefHeight="65.0" prefWidth="87.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Button" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="13" GridPane.valignment="BOTTOM">
+                                                         <font>
+                                                            <Font />
+                                                         </font>
+                                                         <graphic>
+                                                            <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="55" textAlignment="CENTER" wrappingWidth="66.4207444190979" />
+                                                         </graphic>
+                                                         <GridPane.margin>
+                                                            <Insets />
+                                                         </GridPane.margin>
+                                                      </JFXButton>
+                                                      <JFXTextArea focusColor="#27ae60" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                      <JFXTextArea focusColor="#27ae60" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="2.0" />
+                                                         </GridPane.margin>
+                                                      </JFXTextArea>
+                                                      <Label text="From Destination" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="To Destination" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <TextField style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <TextField style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                                                      <TextField style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+                                                      <Label text="Tour Image" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ImageView fitHeight="415.0" fitWidth="750.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </ImageView>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </GridPane>
+                                             </content>
+                                          </ScrollPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab fx:id="routeTab" onSelectionChanged="#displayTourRoute" text="Route">
+                                       <content>
+                                          <HBox>
+                                             <children>
+                                                <GridPane hgap="7.0" minWidth="200.0" prefHeight="384.0" prefWidth="200.0" vgap="5.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="173.0" minWidth="10.0" prefWidth="48.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="152.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints percentHeight="3.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <Label minHeight="20.0" minWidth="30.0" prefHeight="20.0" prefWidth="79.0" text="From" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets left="10.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label minHeight="20.0" minWidth="30.0" prefHeight="20.0" prefWidth="57.0" text="To" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                                         <GridPane.margin>
+                                                            <Insets left="20.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="fromDestination" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="toDestination" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                      <Button mnemonicParsing="false" onAction="#updateTourRoute" text="Update" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+                                                         <GridPane.margin>
+                                                            <Insets />
+                                                         </GridPane.margin>
+                                                      </Button>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets left="3.0" />
+                                                   </padding>
+                                                </GridPane>
+                                                <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="460.0" prefWidth="1081.0">
+                                                   <content>
+                                                      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                                         <columnConstraints>
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                         </columnConstraints>
+                                                         <rowConstraints>
+                                                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                         </rowConstraints>
+                                                         <children>
+                                                            <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="460.0" prefWidth="998.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                                               <center>
+                                                                  <ImageView fx:id="tourImage" fitHeight="488.0" fitWidth="1018.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+                                                               </center>
+                                                            </BorderPane>
+                                                         </children>
+                                                      </GridPane>
+                                                   </content>
+                                                   <padding>
+                                                      <Insets left="10.0" />
+                                                   </padding>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" />
+                                                   </HBox.margin>
+                                                </ScrollPane>
+                                             </children>
+                                          </HBox>
+                                       </content>
+                                    </Tab>
+                                    <Tab fx:id="logTab" text="Logs">
+                                       <content>
+                                          <ScrollPane fitToWidth="true" minViewportWidth="800.0">
+                                             <content>
+                                                <GridPane prefHeight="641.0" prefWidth="1630.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" />
+                                                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="3.0" prefWidth="100.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="2.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <Label text="Author" GridPane.columnIndex="1">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="21.0" prefWidth="141.0" text="Special Remarks" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label prefHeight="21.0" prefWidth="81.0" text="Log Report" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="Traveled Distance in km" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="logAuthor" GridPane.columnIndex="2" />
+                                                      <TextField fx:id="logDistance" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <TextArea fx:id="logReport" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </TextArea>
+                                                      <TextArea fx:id="logRemarks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </TextArea>
+                                                      <Button mnemonicParsing="false" onAction="#updateTourLog" prefHeight="25.0" prefWidth="72.0" text="Update" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                                                      <TextField fx:id="logTotalTime" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                      <Label layoutX="43.0" layoutY="79.0" prefHeight="21.0" prefWidth="132.0" text="Total Time in hours" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="132.0" prefHeight="21.0" prefWidth="150.0" text="Average Speed (km/h)" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="43.0" layoutY="239.0" prefHeight="21.0" prefWidth="49.0" text="Rating" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="logSpeed" layoutX="289.0" layoutY="130.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <Label layoutX="43.0" layoutY="360.0" prefHeight="21.0" prefWidth="81.0" text="Weather" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <TextField fx:id="logWeather" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                                      <TextField fx:id="logJoule" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                                                      <Label layoutX="43.0" layoutY="491.0" prefHeight="21.0" prefWidth="161.0" text="Jouls expended" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="logRating" prefHeight="25.0" prefWidth="72.0" value="0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" />
+                                                   </padding>
+                                                </GridPane>
+                                             </content>
+                                          </ScrollPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab fx:id="logTab1" text="Logs">
+                                       <content>
+                                          <ScrollPane fitToWidth="true" minViewportWidth="800.0">
+                                             <content>
+                                                <TableView fx:id="tourLogsTable" editable="true" prefHeight="1000.0" prefWidth="1610.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="DateColumn"  onEditCommit="#updateTourLog" minWidth="200" resizable="true" text="date" editable="true" />
+                                                      <TableColumn fx:id="ReportColumn"  onEditCommit="#updateTourLog" minWidth="200" resizable="true" text="report" editable="true" />
+                                                      <TableColumn fx:id="DistanceColumn"  onEditCommit="#updateTourLog" minWidth="200" resizable="true" text="distance" editable="true" />
+                                                      <TableColumn fx:id="TimeColumn"  onEditCommit="#updateTourLog" minWidth="200" resizable="true" text="total time" editable="true" />
+                                                      <TableColumn fx:id="RatingColumn"  onEditCommit="#updateTourLog" minWidth="200" resizable="true" text="rating" editable="true" />
+
+                                                   </columns>
+                                                </TableView>
+                                             </content>
+                                          </ScrollPane>
+                                       </content>
+                                    </Tab>
+                                 </tabs>
+                              </TabPane>
+                           </children>
+                        </VBox>
+                     </items>
+                  </SplitPane>
+               </children>
+            </VBox>
+         </items>
+      </SplitPane>
+   </children>
+</VBox>
