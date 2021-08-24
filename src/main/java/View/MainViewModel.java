@@ -257,35 +257,10 @@ public class MainViewModel {
             tourDistance.set(String.valueOf(tourDetails.getTourDistance()));
             tourDescription.set(tourDetails.getTourDescription());
             routeInformation.set(tourDetails.getRouteInformation());
-        }else {
-            tourName.set("----------");
-            tourDistance.set("----------");
-            tourDescription.set("----------");
-            routeInformation.set("----------");
+            fromDestination.set(tourDetails.getTourFrom());
+            toDestination.set(tourDetails.getTourTo());
         }
         log.info("display TourAttributes on UI");
-    }
-
-    public void displayTourRoute() throws TourListManagerException, MapApiHandlerException {
-        if(selectedTab == null || !selectedTab.textProperty().get().equals("Route")){
-            return;
-        }
-        if (selectedListItem==null ){
-            return;
-        }
-        Tour tourDetails=tourListManager.getTourAttributes(selectedListItem);
-        String routeFrom=tourDetails.getTourFrom();
-        String routeTo=tourDetails.getTourTo();
-        if (routeFrom.isEmpty() || routeTo.isEmpty()){
-            fromDestination.set("");
-            toDestination.set("");
-            return;
-        }
-        fromDestination.set(routeFrom);
-        toDestination.set(routeTo);
-        log.info("set TourRoute for Tour");
-        setTourPicture(fromDestination.get(),toDestination.get(),tourDetails.getTourName());
-        log.debug("start AsyncCall for TourImage");
     }
 
     public void updateTourRoute() throws TourListManagerException, MapApiHandlerException {
