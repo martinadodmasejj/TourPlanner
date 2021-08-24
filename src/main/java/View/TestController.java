@@ -219,6 +219,13 @@ public class TestController implements Initializable {
         tourList.setItems(viewModel.getTourList());
         tourList.getSelectionModel().selectedItemProperty().addListener(viewModel.getSelectedTourChange());
 
+        tourName.textProperty().bindBidirectional(viewModel.tourNameProperty());
+        tourDistance.textProperty().bindBidirectional(viewModel.tourDistanceProperty());
+        tourDescription.textProperty().bindBidirectional(viewModel.tourDescriptionProperty());
+        routeInformation.textProperty().bindBidirectional(viewModel.routeInformationProperty());
+        fromDestination.textProperty().bindBidirectional(viewModel.fromDestinationProperty());
+        toDestination.textProperty().bindBidirectional(viewModel.toDestinationProperty());
+
     }
 
     private void initializeLogTable(){
