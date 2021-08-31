@@ -5,6 +5,7 @@ import BusinessLayer.Exceptions.*;
 import Datatypes.InputTypes;
 import Datatypes.Tour;
 import Datatypes.TourLog;
+import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -39,7 +40,7 @@ public class TestController implements Initializable {
     public Tab attributesTab;
     public TextField tourName;
     public TextField tourDistance;
-    public TextField searchField;
+    public JFXTextArea searchField;
     public TextArea tourDescription;
     public TextArea routeInformation;
     public TextField fromDestination;
@@ -101,18 +102,12 @@ public class TestController implements Initializable {
     @FXML
     public void updateTour(ActionEvent actionEvent) throws TourListManagerException {
         System.out.println("Controller updating Tour");
-        boolean tourName = userInputValidator.validateInputText(this.tourName, InputTypes.MUST);
-        boolean routeInformation = userInputValidator.validateInputText(this.routeInformation, InputTypes.OPTIONAL);
-        boolean tourDescription = userInputValidator.validateInputText(this.tourDescription, InputTypes.OPTIONAL);
-        if(tourName && routeInformation && tourDescription ) {
-            viewModel.updateTour();
-        }
+        viewModel.updateTour();
 
     }
 
     @FXML
     public void displayTourInfo(Event event) throws TourListManagerException, MapApiHandlerException, TourLogManagerException {
-        displayTourRoute(event);
         displayTourDetails(event);
         getAllTourLogs(event);
 
@@ -124,15 +119,6 @@ public class TestController implements Initializable {
         viewModel.displayTourAttributes();
     }
 
-    @FXML
-    public void displayTourRoute(Event event) throws TourListManagerException, MapApiHandlerException {
-        viewModel.displayTourRoute();
-    }
-
-    @FXML
-    public void updateTourRoute(ActionEvent actionEvent) throws TourListManagerException, MapApiHandlerException {
-        viewModel.updateTourRoute();
-    }
 
     @FXML
     public void exportPdf(ActionEvent actionEvent) throws PDFExporterException {
@@ -219,6 +205,7 @@ public class TestController implements Initializable {
         tourList.setItems(viewModel.getTourList());
         tourList.getSelectionModel().selectedItemProperty().addListener(viewModel.getSelectedTourChange());
 
+        searchField.textProperty().bindBidirectional(viewModel.searchFieldProperty());
         tourName.textProperty().bindBidirectional(viewModel.tourNameProperty());
         tourDistance.textProperty().bindBidirectional(viewModel.tourDistanceProperty());
         tourDescription.textProperty().bindBidirectional(viewModel.tourDescriptionProperty());
@@ -234,11 +221,11 @@ public class TestController implements Initializable {
         timeColumn.setCellValueFactory(new PropertyValueFactory<TourLog,Double>("duration"));
         distanceColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("traveledDistance"));
         reportColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("logReport"));
-        authorColumn.setCellFactory(new PropertyValueFactory<TourLog,String>("author"));
-        avgSpeedColumn.setCellFactory(new PropertyValueFactory<TourLog,Double>("avgSpeed"));
-        remarksColumn.setCellFactory(new PropertyValueFactory<TourLog,String>("remarks"));
-        weatherColumn.setCellFactory(new PropertyValueFactory<TourLog,String>("weather"));
-        jouleColumn.setCellFactory(new PropertyValueFactory<TourLog,Integer>("joule"));
+        authorColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("author"));
+        avgSpeedColumn.setCellValueFactory(new PropertyValueFactory<TourLog,Double>("avgSpeed"));
+        remarksColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("remarks"));
+        weatherColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("weather"));
+        jouleColumn.setCellValueFactory(new PropertyValueFactory<TourLog,Integer>("joule"));
 
     }
 

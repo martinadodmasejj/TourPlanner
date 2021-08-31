@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.TestController">
+<VBox maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.TestController">
    <children>
       <MenuBar>
          <menus>
@@ -33,7 +50,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
                </rowConstraints>
                <children>
-                  <JFXTextArea focusColor="#27ae60" prefHeight="34.0" prefWidth="1445.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                  <JFXTextArea fx:id="searchField" focusColor="#27ae60" prefHeight="34.0" prefWidth="1445.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                      <GridPane.margin>
                         <Insets bottom="40.0" left="30.0" right="30.0" top="40.0" />
                      </GridPane.margin>
@@ -41,7 +58,7 @@
                         <Font size="20.0" />
                      </font>
                   </JFXTextArea>
-                  <JFXButton prefHeight="40.0" prefWidth="130.0" ripplerFill="#27ae60" text="Search" GridPane.columnIndex="3">
+                  <JFXButton fx:id="searchButton" onAction="#searchTours" prefHeight="40.0" prefWidth="130.0" ripplerFill="#27ae60" text="Search" GridPane.columnIndex="3">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -72,7 +89,15 @@
                         </JFXTextArea>
                      </children>
                   </HBox>
-                  <ListView fx:id="tourList" minWidth="-Infinity" onMouseClicked="#displayTourInfo" prefHeight="644.0" prefWidth="269.0" VBox.vgrow="ALWAYS" />
+                  <ListView fx:id="tourList" minWidth="-Infinity" onMouseClicked="#displayTourInfo" prefHeight="644.0" prefWidth="269.0" stylesheets="@listview_stylesheet.css" VBox.vgrow="ALWAYS">
+                     <contextMenu>
+                        <ContextMenu>
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#deleteTour" text="delete" />
+                           </items>
+                        </ContextMenu>
+                     </contextMenu>
+                  </ListView>
                </children>
             </VBox>
             <VBox>
@@ -135,7 +160,7 @@
                                                             <Font size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <JFXButton ellipsisString="" prefHeight="65.0" prefWidth="85.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Button" GridPane.columnIndex="5" GridPane.rowIndex="13" GridPane.valignment="BOTTOM">
+                                                      <JFXButton ellipsisString="" onAction="#updateTour" prefHeight="65.0" prefWidth="85.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Button" GridPane.columnIndex="5" GridPane.rowIndex="13" GridPane.valignment="BOTTOM">
                                                          <graphic>
                                                             <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="55" textAlignment="CENTER" wrappingWidth="65.5479416847229" />
                                                          </graphic>
@@ -146,7 +171,7 @@
                                                             <Insets top="50.0" />
                                                          </GridPane.margin>
                                                       </JFXButton>
-                                                      <JFXButton ellipsisString="" layoutX="1459.0" layoutY="764.0" prefHeight="65.0" prefWidth="87.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Button" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="13" GridPane.valignment="BOTTOM">
+                                                      <JFXButton ellipsisString="" layoutX="1459.0" layoutY="764.0" onAction="#addTour" prefHeight="65.0" prefWidth="87.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Button" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="13" GridPane.valignment="BOTTOM">
                                                          <font>
                                                             <Font />
                                                          </font>
@@ -173,10 +198,9 @@
                                                             <Font size="18.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField fx:id="tourDistance" style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                                      <TextField fx:id="tourName"  style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="tourDistance" editable="false" style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="tourName" style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                       <TextField fx:id="fromDestination" style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                                                      <TextField fx:id="toDestination" style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="11" />
                                                       <Label text="Tour Image" GridPane.columnIndex="1" GridPane.rowIndex="13">
                                                          <font>
                                                             <Font size="18.0" />
@@ -187,6 +211,7 @@
                                                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                          </GridPane.margin>
                                                       </ImageView>
+                                                      <TextField fx:id="toDestination" layoutX="284.0" layoutY="404.0" style="-fx-focus-color: #27ae60; -fx-faint-focus-color: transparent;" GridPane.columnIndex="2" GridPane.rowIndex="11" />
                                                    </children>
                                                    <padding>
                                                       <Insets bottom="5.0" />
@@ -213,7 +238,7 @@
                                                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                          </padding>
                                                       </Label>
-                                                      <JFXButton alignment="CENTER"  onAction="#addTourLog" ellipsisString="" prefHeight="41.0" prefWidth="96.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Add" textFill="WHITE">
+                                                      <JFXButton alignment="CENTER" ellipsisString="" onAction="#addTourLog" prefHeight="41.0" prefWidth="96.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Add" textFill="WHITE">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -221,7 +246,7 @@
                                                             <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
                                                          </HBox.margin>
                                                       </JFXButton>
-                                                      <JFXButton alignment="CENTER" onAction="#deleteTourLog" ellipsisString="" prefHeight="41.0" prefWidth="96.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Delete" textFill="WHITE">
+                                                      <JFXButton alignment="CENTER" ellipsisString="" onAction="#deleteTourLog" prefHeight="41.0" prefWidth="96.0" ripplerFill="#14713b" style="-fx-background-color: #27ae60;" text="Delete" textFill="WHITE">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -231,9 +256,9 @@
                                                       </JFXButton>
                                                    </children>
                                                 </HBox>
-                                                <ScrollPane fitToWidth="true" minViewportWidth="800.0" prefHeight="905.0" prefWidth="1610.0">
+                                                <ScrollPane fitToWidth="true" minViewportWidth="800.0" prefHeight="800.0" prefWidth="1610.0">
                                                    <content>
-                                                      <TableView fx:id="tourLogsTable" editable="true" maxHeight="1000" prefHeight="880.0" prefWidth="1610.0" tableMenuButtonVisible="true">
+                                                      <TableView fx:id="tourLogsTable" editable="true" maxHeight="1000" prefHeight="600.0" prefWidth="1610.0" tableMenuButtonVisible="true">
                                                          <columns>
                                                             <TableColumn fx:id="authorColumn" editable="true" minWidth="200.0" onEditCommit="#updateTourLogAuthor" prefWidth="200.0" resizable="true" text="author" />
                                                             <TableColumn fx:id="dateColumn" editable="false" minWidth="118.0" prefWidth="225.0" resizable="true" text="date" />

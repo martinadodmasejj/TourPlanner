@@ -79,10 +79,10 @@ public class Model {
         return localTourList.getTours();
     }
 
-    public void addTour(String tourName) throws ModelOperationException{
-        localTourList.addTour(new Tour(tourName));
+    public void addTour(Tour newTour) throws ModelOperationException{
+        localTourList.addTour(newTour);
         try {
-            backendTourManager.createTour(tourName);
+            backendTourManager.createTour(newTour);
         } catch (TourDatabaseOperationException e) {
             throw new ModelOperationException("couldn't get add Tour",e);
         }
@@ -119,12 +119,12 @@ public class Model {
     }
 
     public void updateTour(String actualTourName,String tourDescription, String desTourName
-            ,String routeInformation, double tourDistance) throws ModelOperationException {
+            ,String routeInformation, double tourDistance, String from, String to) throws ModelOperationException {
         try {
             backendTourManager.updateTour(actualTourName,tourDescription,desTourName,
-                    routeInformation,tourDistance);
+                    routeInformation,from,to);
             localTourList.updateTour(actualTourName,tourDescription,desTourName,
-                    routeInformation,tourDistance);
+                    routeInformation,from,to);
             log.debug("DAL Layer update TourDetails unconditionally");
             backendTourManager.updateTourVectorToken(desTourName);
             log.debug("Update Vector for Tour Indexing");
@@ -160,19 +160,6 @@ public class Model {
         return generatedString;
     }
 
-    public void updateTourRoute(String tourName,String from,String to) throws ModelOperationException {
-        localTourList.updateTourRoute(tourName,from,to);
-        try {
-            backendTourManager.updateTourRoute(tourName,from,to);
-            log.debug("DAL Layer update TourRoute unconditionally");
-            backendTourManager.updateTourVectorToken(tourName);
-            log.debug("Update Vector for Tour Indexing");
-
-        } catch (TourDatabaseOperationException throwables) {
-            throw new ModelOperationException("couldn't get update TourRoute",throwables);
-        }
-
-    }
 
     public List<String> fullTextSearch(String input) throws ModelOperationException {
         List<String> searchedTours = null;

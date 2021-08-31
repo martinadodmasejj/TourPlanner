@@ -206,9 +206,14 @@ public class MainViewModel {
 
 
     public void addTour() throws TourListManagerException {
-        String newTourName=tourListManager.generateTourRandomName();
-        tourListManager.addTour(newTourName);
-        tourList.add(newTourName);
+        Tour newTour = new Tour();
+        newTour.setTourName(tourName.getValue());
+        newTour.setTourDescription(tourDescription.getValue());
+        newTour.setRouteInformation(routeInformation.getValue());
+        newTour.setTourTo(toDestination.getValue());
+        newTour.setTourFrom(fromDestination.getValue());
+        tourListManager.addTour(newTour);
+        tourList.add(newTour.getTourName());
         log.debug("MVM Tour Insertion");
     }
 
@@ -226,7 +231,9 @@ public class MainViewModel {
         String tourDescription=this.tourDescription.getValue();
         String routeInformation=this.routeInformation.getValue();
         double tourDistance= Double.parseDouble(this.tourDistance.getValue());
-        tourListManager.updateTour(selectedListItem,tourDescription,tourName,routeInformation,tourDistance);
+        String from = this.fromDestination.get();
+        String to = this.toDestination.get();
+        tourListManager.updateTour(selectedListItem,tourDescription,tourName,routeInformation,tourDistance,from,to);
         if (tourName.equals(selectedListItem)){
             return;
         }
@@ -263,16 +270,6 @@ public class MainViewModel {
         log.info("display TourAttributes on UI");
     }
 
-    public void updateTourRoute() throws TourListManagerException, MapApiHandlerException {
-        if (selectedListItem==null){
-            return;
-        }
-        String routeFrom=fromDestination.get();
-        String routeTo=toDestination.get();
-        tourListManager.updateTourRoute(selectedListItem,routeFrom,routeTo);
-        setTourPicture(routeFrom,routeTo,selectedListItem);
-        log.debug("MVM update TourRoute");
-    }
 
     public void exportPdf() throws PDFExporterException {
         if (pdfExporter == null){
@@ -301,6 +298,7 @@ public class MainViewModel {
     public void addTourLog() throws TourLogManagerException {
         if (selectedListItem != null){
             tourLogManager.addTourLog(selectedListItem);
+
             getAllTourLogs();
         }
     }

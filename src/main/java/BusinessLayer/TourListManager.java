@@ -32,9 +32,9 @@ public class TourListManager {
         }
     }
 
-    public void addTour (String tourName) throws TourListManagerException {
+    public void addTour (Tour newTour) throws TourListManagerException {
         try {
-            model.addTour(tourName);
+            model.addTour(newTour);
             log.debug("BL added Tour to List");
         } catch (ModelOperationException e) {
             throw new TourListManagerException("Could not add Tour Distance",e);

@@ -31,16 +31,17 @@ public class BackendTourManager {
     }
 
 
-    public int createTour(String tourName) throws TourDatabaseOperationException {
-        String sqlInsert="insert into \"TourPlanner\".tour (\"name\", \"tourDescription\", \"routeInformation\", \"tourDistance\")\n" +
-                "values (?,?,?,?) RETURNING \"id\";";
+    public int createTour(Tour newTour) throws TourDatabaseOperationException {
+        String sqlInsert="insert into \"TourPlanner\".tour (\"name\", \"tourDescription\", \"routeInformation\" , \"to\", \"from\")\n" +
+                "values (?,?,?,?,?) RETURNING \"id\";";
         PreparedStatement preparedStatement= null;
         try {
             preparedStatement = dbInstance.getConnection().prepareStatement(sqlInsert);
-            preparedStatement.setString(1,tourName);
-            preparedStatement.setString(2,"------");
-            preparedStatement.setString(3,"------");
-            preparedStatement.setDouble(4,0.0);
+            preparedStatement.setString(1,newTour.getTourName());
+            preparedStatement.setString(2,newTour.getTourDescription());
+            preparedStatement.setString(3,newTour.getRouteInformation());
+            preparedStatement.setString(4,newTour.getTourTo());
+            preparedStatement.setString(5,newTour.getTourFrom());
             ResultSet resultSet=preparedStatement.executeQuery();
             if (resultSet.next()){
                 log.debug("Created Tour Successfully");
@@ -127,42 +128,23 @@ public class BackendTourManager {
     }
 
     public void updateTour(String actualTourName,String tourDescription, String desTourName
-                        ,String routeInformation, double tourDistance) throws TourDatabaseOperationException {
+                        ,String routeInformation, String from, String to) throws TourDatabaseOperationException {
         String updateSql="update \"TourPlanner\".tour\n" +
-                "set \"name\"  = ?, \"tourDescription\" = ?, \"routeInformation\" = ?,\n" +
-                "    \"tourDistance\" = ? where \"name\" = ?";
+                "set \"name\"  = ?, \"tourDescription\" = ?, \"routeInformation\" = ?, \"from\" = ?, \"to\" = ? \n" +
+                " where \"name\" = ?";
         PreparedStatement preparedStatement= null;
-
         try {
             preparedStatement = dbInstance.getConnection().prepareStatement(updateSql);
             preparedStatement.setString(1,desTourName);
             preparedStatement.setString(2,tourDescription);
             preparedStatement.setString(3,routeInformation);
-            preparedStatement.setDouble(4,tourDistance);
-            preparedStatement.setString(5,actualTourName);
+            preparedStatement.setString(4,from);
+            preparedStatement.setString(5,to);
+            preparedStatement.setString(6,actualTourName);
             preparedStatement.executeUpdate();
             log.debug("TourAttributes Updated in Database");
         } catch (SQLException throwables) {
             throw new TourDatabaseOperationException("Couldn't update Tour Attributes",throwables);
-        }
-
-    }
-
-    public void updateTourRoute(String tourName,String from,String to) throws TourDatabaseOperationException {
-        String sqlInsert="update \"TourPlanner\".tour\n" +
-                "set \"from\" = ?, \"to\" = ?\n" +
-                "where name = ?";
-        PreparedStatement preparedStatement= null;
-        try {
-            preparedStatement = dbInstance.getConnection().prepareStatement(sqlInsert);
-            preparedStatement.setString(1,from);
-            preparedStatement.setString(2,to);
-            preparedStatement.setString(3,tourName);
-            preparedStatement.executeUpdate();
-            log.debug("TourRoute Updated in Database");
-
-        } catch (SQLException throwables) {
-            throw new TourDatabaseOperationException("Couldn't update Tour Route",throwables);
         }
 
     }
