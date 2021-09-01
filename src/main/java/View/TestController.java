@@ -87,7 +87,7 @@ public class TestController implements Initializable {
 
 
     @FXML
-    public void addTour(ActionEvent actionEvent) throws TourListManagerException {
+    public void addTour(ActionEvent actionEvent) throws TourListManagerException, MapApiHandlerException {
         System.out.println("Controller generate new Tour");
         viewModel.addTour();
     }
@@ -100,17 +100,16 @@ public class TestController implements Initializable {
     }
 
     @FXML
-    public void updateTour(ActionEvent actionEvent) throws TourListManagerException {
+    public void updateTour(ActionEvent actionEvent) throws TourListManagerException, MapApiHandlerException {
         System.out.println("Controller updating Tour");
         viewModel.updateTour();
 
     }
 
     @FXML
-    public void displayTourInfo(Event event) throws TourListManagerException, MapApiHandlerException, TourLogManagerException {
+    public void displayTourInfo(Event event) throws TourListManagerException, TourLogManagerException {
         displayTourDetails(event);
         getAllTourLogs(event);
-
     }
 
     @FXML
@@ -212,7 +211,7 @@ public class TestController implements Initializable {
         routeInformation.textProperty().bindBidirectional(viewModel.routeInformationProperty());
         fromDestination.textProperty().bindBidirectional(viewModel.fromDestinationProperty());
         toDestination.textProperty().bindBidirectional(viewModel.toDestinationProperty());
-
+        tourImage.imageProperty().bindBidirectional(viewModel.tourImageProperty());
     }
 
     private void initializeLogTable(){
