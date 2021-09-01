@@ -14,6 +14,9 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -205,7 +208,7 @@ public class MainViewModel {
 
 
 
-    public void addTour() throws TourListManagerException {
+    public void addTour() throws TourListManagerException, MapApiHandlerException {
         Tour newTour = new Tour();
         newTour.setTourName(tourName.getValue());
         newTour.setTourDescription(tourDescription.getValue());
@@ -215,15 +218,20 @@ public class MainViewModel {
         tourListManager.addTour(newTour);
         tourList.add(newTour.getTourName());
         log.debug("MVM Tour Insertion");
+        if (newTour.getTourTo()!=null && newTour.getTourFrom()!=null){
+            saveTourPicture(newTour.getTourTo(),newTour.getTourFrom(), newTour.getTourName());
+        }
     }
 
     public void deleteTour() throws TourListManagerException {
+        File file = new File("src/main/resources/View/pictures/"+selectedListItem+".jpg");
+        file.delete();
         tourListManager.deleteTour(selectedListItem);
         tourList.remove(selectedListItem);
-        log.debug("MVM Tour Deletion");
+        log.debug("MVVM Tour Deletion");
     }
 
-    public void updateTour() throws TourListManagerException {
+    public void updateTour() throws TourListManagerException, MapApiHandlerException {
         if(selectedListItem == null){
             return;
         }
@@ -234,30 +242,34 @@ public class MainViewModel {
         String from = this.fromDestination.get();
         String to = this.toDestination.get();
         tourListManager.updateTour(selectedListItem,tourDescription,tourName,routeInformation,tourDistance,from,to);
+        saveTourPicture(from,to,tourName);
         if (tourName.equals(selectedListItem)){
             return;
         }
         int curr_pos=tourList.indexOf(selectedListItem);
         tourList.set(curr_pos,tourName);
-        log.debug("MVM Tour Updated");
+        log.debug("MVVM Tour Updated");
     }
 
-    private void setTourPicture(String from,String to,String tourName) throws MapApiHandlerException {
-        Image srcGif = new Image("file:src/main/resources/View/loading_2.gif");
-        tourImage.set(srcGif);
-        mapApiHttpHandler.sendMapApiRequest(tourImage,from,to,tourName);
-        log.debug("MVM send TourPicture request");
+    private void saveTourPicture(String from,String to,String tourName) throws MapApiHandlerException {
+        //Image srcGif = new Image("file:src/main/resources/View/loading_2.gif");
+        //tourImage.set(srcGif);
+        log.debug("MVVM send TourPicture request");
+        Image resultImage = mapApiHttpHandler.sendImageRequest(from,to,tourName);
+        tourImage.set(resultImage);
+        log.debug("Set Picture from Http Request");
+    }
+
+    private void displayTourPicture(String tourName) {
+        Image resultImage = new Image("file:src/main/resources/View/pictures/"+tourName+".jpg");
+        tourImage.set(resultImage);
+        log.debug("Set Picture from File system");
     }
 
     public void displayTourAttributes() throws TourListManagerException {
-        if (selectedTab == null ||selectedTab.textProperty().get().equals("Description")) {
-
-        }
-
         if (selectedListItem==null ){
             return;
         }
-
         Tour tourDetails=tourListManager.getTourAttributes(selectedListItem);
         if(tourDetails!=null) {
             tourName.set(tourDetails.getTourName());
@@ -266,6 +278,7 @@ public class MainViewModel {
             routeInformation.set(tourDetails.getRouteInformation());
             fromDestination.set(tourDetails.getTourFrom());
             toDestination.set(tourDetails.getTourTo());
+            displayTourPicture(tourDetails.getTourName());
         }
         log.info("display TourAttributes on UI");
     }
