@@ -28,13 +28,6 @@
 <VBox maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.TestController">
    <children>
       <MenuBar>
-         <menus>
-            <Menu mnemonicParsing="false" text="File">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#exportJson" text="Export Tour as Json" />
-               </items>
-            </Menu>
-         </menus>
       </MenuBar>
       <HBox maxHeight="100.0" minHeight="80.0" prefHeight="80.0" prefWidth="1200.0" VBox.vgrow="ALWAYS">
          <children>
@@ -94,6 +87,8 @@
                         <ContextMenu>
                            <items>
                               <MenuItem mnemonicParsing="false" onAction="#deleteTour" text="delete" />
+                              <MenuItem mnemonicParsing="false" onAction="#generateTourReport" text="generate Tour Report" />
+                              <MenuItem mnemonicParsing="false" onAction="#generateSummaryReport" text="generate Tour Report Summary" />
                            </items>
                         </ContextMenu>
                      </contextMenu>

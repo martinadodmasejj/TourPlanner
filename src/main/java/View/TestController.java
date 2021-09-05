@@ -2,40 +2,28 @@ package View;
 
 
 import BusinessLayer.Exceptions.*;
-import Datatypes.InputTypes;
-import Datatypes.Tour;
 import Datatypes.TourLog;
 import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
-import javafx.util.StringConverter;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.IntegerStringConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.mockito.internal.matchers.Any;
 
 import java.net.URL;
-import java.sql.Time;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class TestController implements Initializable {
 
-    // custom ViewModel
     private final Logger log;
     public MainViewModel viewModel = new MainViewModel();
 
-
-    // fx:id and use intelliJ to create field in controller
     public ListView tourList;
     public Tab attributesTab;
     public TextField tourName;
@@ -47,7 +35,6 @@ public class TestController implements Initializable {
     public TextField toDestination;
     public ImageView tourImage;
 
-    public Tab routeTab;
     public TabPane selectionTab;
     public Tab logTab;
 
@@ -64,24 +51,10 @@ public class TestController implements Initializable {
     public TableColumn authorColumn;
 
 
-    public TextField logAuthor;
-    public TextField logDistance;
-    public TextField logTotalTime;
-    public ChoiceBox logRating;
-    public TextField logSpeed;
-    public TextArea logReport;
-    public TextArea logRemarks;
-    public TextField logWeather;
-    public TextField logJoule;
-
-    private UserInputValidator userInputValidator;
-
-
-    public TestController() throws TourListManagerException, TourLogManagerException, MapApiHandlerException, JsonExporterException {
+    public TestController() throws TourListManagerException, TourLogManagerException, MapApiHandlerException {
         System.out.println("Controller generated");
         Configurator.initialize(null, "TourPlannerLog4j.conf.xml");
         log = LogManager.getLogger(TestController.class);
-        userInputValidator = new UserInputValidator();
 
     }
 
@@ -120,9 +93,15 @@ public class TestController implements Initializable {
 
 
     @FXML
-    public void exportPdf(ActionEvent actionEvent) throws PDFExporterException {
-        viewModel.exportPdf();
+    public void generateTourReport(ActionEvent actionEvent) throws ReportGeneratorException {
+        viewModel.generateTourReport();
     }
+
+    @FXML
+    public void generateSummaryReport(ActionEvent actionEvent) throws ReportGeneratorException {
+        viewModel.generateTourSummaryReport();
+    }
+
 
     @FXML
     public void searchTours(ActionEvent actionEvent) throws TourListManagerException {
@@ -189,10 +168,6 @@ public class TestController implements Initializable {
         viewModel.updateTourLogJoule(event.getNewValue());
     }
 
-    @FXML
-    public void exportJson(ActionEvent actionEvent) throws JsonExporterException{
-        viewModel.exportJson();
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

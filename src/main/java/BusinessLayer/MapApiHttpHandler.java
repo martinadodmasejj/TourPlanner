@@ -2,10 +2,7 @@ package BusinessLayer;
 
 
 import BusinessLayer.Exceptions.MapApiHandlerException;
-import BusinessLayer.Exceptions.PDFExporterException;
 import BusinessLayer.Exceptions.TourListManagerException;
-import BusinessLayer.Exporting.PDFExporter;
-import javafx.beans.property.ObjectProperty;
 import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
@@ -18,7 +15,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.concurrent.CompletableFuture;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -145,7 +141,7 @@ public class MapApiHttpHandler {
                     .build();
 
             log.trace("Get Async Image Response");
-            log.info("Send Async ImageRequest for PDFExporter");
+            log.info("Send Async ImageRequest for ReportGenerator");
         }
         return  null;
     }
