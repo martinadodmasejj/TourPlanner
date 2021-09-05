@@ -22,17 +22,17 @@ module org.openjfx {
     requires javafx.graphics;
     requires thumbnailator;
 
-    exports View;
-    exports TestingPackage;
-    exports DataAccessLayer;
-    opens DataAccessLayer to javafx.fxml;
-    exports BusinessLayer;
-    opens BusinessLayer to javafx.fxml;
-    opens View to javafx.fxml;
-    exports DataAccessLayer.Database;
-    opens DataAccessLayer.Database to javafx.fxml;
-    exports DataAccessLayer.Local;
-    opens DataAccessLayer.Local to javafx.fxml;
-    exports Datatypes;
-    opens Datatypes to javafx.fxml;
+    exports VIEW;
+    exports TEST;
+    exports DAL;
+    opens DAL to javafx.fxml;
+    exports BL;
+    opens BL to javafx.fxml;
+    opens VIEW to javafx.fxml;
+    exports DAL.Database;
+    opens DAL.Database to javafx.fxml;
+    exports DAL.Local;
+    opens DAL.Local to javafx.fxml;
+    exports DATATYPES;
+    opens DATATYPES to javafx.fxml;
 }
