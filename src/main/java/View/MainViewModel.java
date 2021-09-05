@@ -2,20 +2,16 @@ package View;
 
 import BusinessLayer.*;
 import BusinessLayer.Exceptions.*;
-import BusinessLayer.Exporting.JsonExporter;
-import BusinessLayer.Exporting.PDFExporter;
+import BusinessLayer.Exporting.ReportGenerator;
 import Datatypes.Tour;
 import Datatypes.TourLog;
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +20,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
 import javafx.beans.value.ChangeListener;
-import org.mockito.internal.matchers.Any;
 
 
 public class MainViewModel {
@@ -32,7 +27,7 @@ public class MainViewModel {
     private TourListManager tourListManager;
     private TourLogManager tourLogManager;
     private final Logger log;
-    PDFExporter pdfExporter=null;
+    ReportGenerator reportGenerator =null;
 
     private ObservableList<String> tourList;
     private ObservableList<TourLog> tourLogs;
@@ -40,7 +35,6 @@ public class MainViewModel {
     private ObjectProperty<ObservableList<String>> tourListView;
 
     MapApiHttpHandler mapApiHttpHandler = new MapApiHttpHandler();
-    JsonExporter jsonExporter = new JsonExporter();
 
     private final StringProperty tourName = new SimpleStringProperty("");
     private final StringProperty tourDistance = new SimpleStringProperty("");
@@ -71,7 +65,7 @@ public class MainViewModel {
     private int selectedRating=0;
     private Tab selectedTab=null;
 
-    public MainViewModel() throws TourLogManagerException, TourListManagerException, MapApiHandlerException, JsonExporterException {
+    public MainViewModel() throws TourLogManagerException, TourListManagerException, MapApiHandlerException {
         Configurator.initialize(null, "TourPlannerLog4j.conf.xml");
         log = LogManager.getLogger(MainViewModel.class);
         tourListManager = new TourListManager();
@@ -208,6 +202,11 @@ public class MainViewModel {
 
 
 
+    private void deleteTourPicture(){
+        File file = new File("src/main/resources/View/pictures/"+selectedListItem+".jpg");
+        file.delete();
+    }
+
     public void addTour() throws TourListManagerException, MapApiHandlerException {
         Tour newTour = new Tour();
         newTour.setTourName(tourName.getValue());
@@ -224,8 +223,7 @@ public class MainViewModel {
     }
 
     public void deleteTour() throws TourListManagerException {
-        File file = new File("src/main/resources/View/pictures/"+selectedListItem+".jpg");
-        file.delete();
+        deleteTourPicture();
         tourListManager.deleteTour(selectedListItem);
         tourList.remove(selectedListItem);
         log.debug("MVVM Tour Deletion");
@@ -249,6 +247,7 @@ public class MainViewModel {
         int curr_pos=tourList.indexOf(selectedListItem);
         tourList.set(curr_pos,tourName);
         log.debug("MVVM Tour Updated");
+
     }
 
     private void saveTourPicture(String from,String to,String tourName) throws MapApiHandlerException {
@@ -284,16 +283,18 @@ public class MainViewModel {
     }
 
 
-    public void exportPdf() throws PDFExporterException {
-        if (pdfExporter == null){
-            pdfExporter = new PDFExporter();
+    public void generateTourReport() throws ReportGeneratorException {
+        if (reportGenerator == null){
+            reportGenerator = new ReportGenerator();
         }
-        if (selectedListItem == null){
-            pdfExporter.exportToursPdf();
+        reportGenerator.generateTourReport(selectedListItem);
+    }
+
+    public void generateTourSummaryReport() throws ReportGeneratorException{
+        if (reportGenerator == null){
+            reportGenerator = new ReportGenerator();
         }
-        else {
-            pdfExporter.exportTourPdf(selectedListItem);
-        }
+        reportGenerator.genereateTourSummaryReport();
     }
 
     public void searchTours() throws TourListManagerException {
@@ -393,10 +394,6 @@ public class MainViewModel {
         tourLogManager.updateTourLog(selectedLog);
     }
 
-
-    public void exportJson() throws JsonExporterException {
-        jsonExporter.exportJson(selectedListItem);
-    }
 
 
 }
