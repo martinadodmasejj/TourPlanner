@@ -119,9 +119,10 @@ public class ReportGenerator
     public void genereateTourSummaryReport() throws ReportGeneratorException {
 
         Document document = new Document();
-        List<Tour> tours = tourListManager.getAllToursAttributes();
+
         log.debug("Retrieved all Tour Infos and TourLogs for PDF Exporting");
         try {
+            List<Tour> tours = tourListManager.getAllToursAttributes();
             PdfWriter.getInstance(document, new FileOutputStream("TourReport_AllTours.pdf"));
             document.open();
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA, 22, Font.BOLD);
@@ -158,9 +159,11 @@ public class ReportGenerator
 
             }
         } catch (DocumentException e) {
-            e.printStackTrace();
+            throw new ReportGeneratorException("couldn't create PDF Document",e);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new ReportGeneratorException("couldn't generate File for Report",e);
+        } catch (TourListManagerException e) {
+            throw new ReportGeneratorException("couldn't get Tours for Report generation",e);
         }
 
         document.close();
