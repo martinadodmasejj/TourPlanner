@@ -17,23 +17,19 @@ import java.util.Random;
 
 public class Model {
 
-    //private List<String> tours;
     private final Logger log = LogManager.getLogger(Model.class);;
     private BackendTourManager backendTourManager;
-    private LocalTourList localTourList;
     private BackendTourLogManager backendTourLogManager;
     private static Model instance=null;
     private static Model testInstance=null;
 
 
     private Model() throws ModelOperationException {
-        localTourList = LocalTourList.getTourListManagerInstance();
         try {
             backendTourManager=new BackendTourManager();
-            backendTourManager.getAllToursFromBackend(localTourList);
             backendTourLogManager = new BackendTourLogManager();
 
-        } catch (TourLogDatabaseOperationException | TourDatabaseOperationException e) {
+        } catch (TourLogDatabaseOperationException e) {
             throw new ModelOperationException("couldn't instantiate TourLogManager for Model",e);
         } catch (DatabaseInstanceException e) {
             throw new ModelOperationException("couldn't get DatabaseInstance for Model",e);
@@ -46,7 +42,6 @@ public class Model {
 
     private Model(boolean Test){
         if (Test){
-            localTourList = LocalTourList.getTourListManagerInstance();
             backendTourManager=null;
         }
     }
@@ -67,32 +62,31 @@ public class Model {
     }
 
 
-    public List<String> getTours() {
+    public List<Tour> getTours() throws ModelOperationException {
         log.debug("DAL Layer return all Tours");
-        return localTourList.getToursUI();
+        try {
+            return backendTourManager.getAllToursFromBackend();
+        } catch (TourDatabaseOperationException e) {
+            throw new ModelOperationException("couldn't get all Tours",e);
+        }
     }
 
-    public List<Tour> getAllToursDetails(){
-        return localTourList.getTours();
-    }
 
     public void addTour(Tour newTour) throws ModelOperationException{
-        localTourList.addTour(newTour);
         try {
             backendTourManager.createTour(newTour);
         } catch (TourDatabaseOperationException e) {
-            throw new ModelOperationException("couldn't get add Tour",e);
+            throw new ModelOperationException("couldn't add Tour",e);
         }
         log.debug("DAL Layer add Tour in Backend");
     }
 
-    public void deleteTour(String tourName) throws ModelOperationException {
-        if (tourName==null){
+    public void deleteTour(Tour tour) throws ModelOperationException {
+        if (tour==null){
             return;
         }
-        localTourList.deleteTour(tourName);
         try {
-            backendTourManager.deleteTour(tourName);
+            backendTourManager.deleteTour(tour);
             log.debug("DAL Layer delete Tour in Backend");
         } catch (TourDatabaseOperationException throwables) {
             throw new ModelOperationException("couldn't delete Tour",throwables);
@@ -101,10 +95,6 @@ public class Model {
     }
 
     public Tour getTourDetails(int tourID,String tourName) throws ModelOperationException {
-        Tour returnTour= localTourList.getTour(tourName);
-        if(returnTour != null){
-            return returnTour;
-        }
         log.debug("DAL Layer return TourDetails unconditionally");
         try {
             return backendTourManager.getTourDetails(tourID,tourName);
@@ -120,8 +110,6 @@ public class Model {
         try {
             backendTourManager.updateTour(actualTourName,tourDescription,desTourName,
                     routeInformation,from,to);
-            localTourList.updateTour(actualTourName,tourDescription,desTourName,
-                    routeInformation,from,to);
             log.debug("DAL Layer update TourDetails unconditionally");
             backendTourManager.updateTourVectorToken(desTourName);
             log.debug("Update Vector for Tour Indexing");
@@ -131,35 +119,8 @@ public class Model {
 
     }
 
-    public String generateTourRandomName() {
-        while (true) {
-            String randomPart=generateRandomString();
-            String tourName="Tour_"+randomPart;
-            if (!localTourList.containsTour(tourName)){
-                log.info("Generated random name for new Tour");
-                return tourName;
-            }
-        }
-    }
-
-    private String generateRandomString(){
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-        log.debug("Generated random String");
-        return generatedString;
-    }
-
-
-    public List<String> fullTextSearch(String input) throws ModelOperationException {
-        List<String> searchedTours = null;
+    public List<Tour> fullTextSearch(String input) throws ModelOperationException {
+        List<Tour> searchedTours = null;
         try {
             log.debug("Return all Searched Tours from Model");
             return searchedTours = backendTourManager.getToursFromSearch(input);
@@ -169,7 +130,6 @@ public class Model {
     }
 
     public void updateDistance(String tourName,Double distance) throws ModelOperationException {
-        localTourList.updateTourDistance(tourName,distance);
         try {
             backendTourManager.updateTourDistance(tourName,distance);
             log.debug("Model update Tour Distance from MapApi");

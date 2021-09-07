@@ -48,12 +48,12 @@ public class ReportGenerator
         return resultImage;
     }
 
-    public void generateTourReport(String tourName) throws ReportGeneratorException {
+    public void generateTourReport(Tour tour) throws ReportGeneratorException {
 
         Document document = new Document();
-        Tour tourDetails= null;
+        Tour tourDetails= tour;
+        String tourName = tour.getTourName();
         try {
-            tourDetails = tourListManager.getTourAttributes(tourName);
             List<TourLog> tourLogList = tourLogManager.getAllTourLogs(tourName);
             log.debug("Collected all Tour Attributes and TourLogs for PDF Exporting");
             PdfWriter.getInstance(document, new FileOutputStream("TourReport_"+tourName+".pdf"));

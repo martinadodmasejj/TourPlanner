@@ -235,7 +235,7 @@ false America/Rio_Branco
 false America/Rosario
 true America/Santa_Isabel
 false America/Santarem
-false America/Santiago
+true America/Santiago
 false America/Santo_Domingo
 false America/Sao_Paulo
 true America/Scoresbysund
@@ -433,7 +433,7 @@ false CHAST
 false CHUT
 false CKT
 true CLST
-false CLT
+true CLT
 false COT
 false CST
 true CST6CDT
@@ -446,13 +446,13 @@ true Canada/Newfoundland
 true Canada/Pacific
 false Canada/Saskatchewan
 false Canada/Yukon
-false Chile/Continental
-false Chile/EasterIsland
+true Chile/Continental
+true Chile/EasterIsland
 true Cuba
 false DAVT
 false DDUT
-false EASST
-false EAST
+true EASST
+true EAST
 false EAT
 true EDT
 true EEST
@@ -688,7 +688,7 @@ false Pacific/Auckland
 false Pacific/Bougainville
 false Pacific/Chatham
 false Pacific/Chuuk
-false Pacific/Easter
+true Pacific/Easter
 false Pacific/Efate
 false Pacific/Enderbury
 false Pacific/Fakaofo
@@ -792,7 +792,7 @@ false YEKT
 false Z
 false Zulu
 </TimeZones>
-      <StartupTime>1629444029</StartupTime>
+      <StartupTime>1630491767</StartupTime>
     </root>
     <database id="2" parent="1" name="MonsterCardGame">
       <ObjectId>16394</ObjectId>
@@ -833,7 +833,7 @@ sequence|table|16433|16414|1
 13158||-9223372036854775808|U|G
 13158||10|U|G</Grants>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>2336</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2473</IntrospectionStateNumber>
       <Current>1</Current>
       <Relations>sequence|table|90159|90146|1
 sequence|table|90161|90136|1
@@ -894,7 +894,7 @@ sequence|table|90161|90136|1
       <ObjectId>90135</ObjectId>
       <StateNumber>2186</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>2337</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2469</IntrospectionStateNumber>
     </schema>
     <schema id="19" parent="5" name="information_schema">
       <ObjectId>13158</ObjectId>
@@ -912,6 +912,7 @@ sequence|table|90161|90136|1
       <Comment>standard public schema</Comment>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
+      <IntrospectionStateNumber>2474</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <extension id="22" parent="5" name="plpgsql">
