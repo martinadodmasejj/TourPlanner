@@ -136,7 +136,7 @@ public class MainViewModel {
         tourList.add(newTour);
         log.debug("MVM Tour Insertion");
         if (newTour.getTourTo()!=null && newTour.getTourFrom()!=null){
-            saveTourPicture(newTour.getTourTo(),newTour.getTourFrom(), newTour.getTourName());
+            saveTourPicture(newTour);
         }
     }
 
@@ -163,9 +163,8 @@ public class MainViewModel {
         selectedListItem.setRouteInformation(this.routeInformation.getValue());
         selectedListItem.setTourFrom(this.fromDestination.get());
         selectedListItem.setTourTo(this.toDestination.get());
-
         tourListManager.updateTour(oldName,tourDescription,tourName,routeInformation,tourDistance,from,to);
-        saveTourPicture(from,to,tourName);
+        saveTourPicture(selectedListItem);
         if (tourName.equals(selectedListItem)){
             return;
         }
@@ -175,9 +174,12 @@ public class MainViewModel {
 
     }
 
-    private void saveTourPicture(String from,String to,String tourName) throws MapApiHandlerException {
+    private void saveTourPicture(Tour newTour) throws MapApiHandlerException, TourListManagerException {
         log.debug("MVVM send TourPicture request");
-        Image resultImage = mapApiHandler.sendImageRequest(from,to,tourName);
+        Double distance = mapApiHandler.sendImageRequest(newTour.getTourFrom(),newTour.getTourTo(),newTour.getTourName());
+        tourListManager.updateTourDistance(newTour.getTourName(),distance);
+        newTour.setTourDistance(distance);
+        Image resultImage = new Image("file:src/main/resources/View/pictures/"+tourName+".jpg");
         tourImage.set(resultImage);
         log.debug("Set Picture from Http Request");
     }

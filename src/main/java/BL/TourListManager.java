@@ -101,8 +101,12 @@ public class TourListManager {
         }
     }
 
-    public List<Tour> getAllToursAttributes(){
+    public List<Tour> getAllToursAttributes() throws TourListManagerException {
         log.debug("BL retrieved all Tours with all of their Info");
-        return model.getAllToursDetails();
+        try {
+            return model.getTours();
+        } catch (ModelOperationException e) {
+            throw new TourListManagerException("Couldnt get all Tours in BL Layer from Backend",e);
+        }
     }
 }

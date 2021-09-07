@@ -2,6 +2,7 @@ package VIEW;
 
 
 import BL.Exceptions.*;
+import DATATYPES.Tour;
 import DATATYPES.TourLog;
 import com.jfoenix.controls.JFXTextArea;
 import javafx.event.ActionEvent;
@@ -9,9 +10,12 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
+import javafx.util.converter.ShortStringConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -178,6 +182,11 @@ public class Controller implements Initializable {
 
         tourList.setItems(viewModel.getTourList());
         tourList.getSelectionModel().selectedItemProperty().addListener(viewModel.getSelectedTourChange());
+        tourList.setCellFactory(lv -> {
+            TextFieldListCell<Tour> cell = new TextFieldListCell<>();
+            cell.setConverter(new CustomTourConverter(cell));
+            return cell ;
+        });
 
         searchField.textProperty().bindBidirectional(viewModel.searchFieldProperty());
         tourName.textProperty().bindBidirectional(viewModel.tourNameProperty());
@@ -188,6 +197,7 @@ public class Controller implements Initializable {
         toDestination.textProperty().bindBidirectional(viewModel.toDestinationProperty());
         tourImage.imageProperty().bindBidirectional(viewModel.tourImageProperty());
     }
+
 
     private void initializeLogTable(){
         dateColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("date"));
@@ -214,10 +224,6 @@ public class Controller implements Initializable {
         weatherColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         jouleColumn.setCellFactory(TextFieldTableCell.forTableColumn(new CustomIntegerStringConverter()));
     }
-
-
-
-
 
 
 }
