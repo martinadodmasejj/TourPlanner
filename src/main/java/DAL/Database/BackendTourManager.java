@@ -52,14 +52,14 @@ public class BackendTourManager {
     }
 
 
-    public void deleteTour(String tourName) throws TourDatabaseOperationException {
+    public void deleteTour(Tour tour) throws TourDatabaseOperationException {
         String deleteSql="delete\n" +
                 "from \"TourPlanner\".tour\n" +
                 "where name=?";
         PreparedStatement preparedStatement= null;
         try {
             preparedStatement = dbInstance.getConnection().prepareStatement(deleteSql);
-            preparedStatement.setString(1,tourName);
+            preparedStatement.setString(1,tour.getTourName());
             preparedStatement.executeUpdate();
             log.debug("Tour deleted Successfully");
         } catch (SQLException throwables) {
@@ -102,11 +102,13 @@ public class BackendTourManager {
 
     }
 
-    public void getAllToursFromBackend(LocalTourList localTourList) throws TourDatabaseOperationException {
+    public List<Tour> getAllToursFromBackend() throws TourDatabaseOperationException {
         String sqlSelect="select *\n" +
                 "from \"TourPlanner\".tour LIMIT 100";
         PreparedStatement preparedStatement= null;
+        List<Tour> tourList;
         try {
+            tourList = new ArrayList<>();
             preparedStatement = dbInstance.getConnection().prepareStatement(sqlSelect);
             ResultSet resultSet=preparedStatement.executeQuery();
             while (resultSet.next()){
@@ -117,12 +119,13 @@ public class BackendTourManager {
                 tour.setRouteInformation(resultSet.getString("routeInformation"));
                 tour.setTourFrom(resultSet.getString("from"));
                 tour.setTourTo(resultSet.getString("to"));
-                localTourList.addTour(tour);
+                tourList.add(tour);
             }
             log.debug("Filled LocalTourList with all Tours");
         } catch (SQLException throwables) {
             throw new TourDatabaseOperationException("Couldn't get TourList",throwables);
         }
+        return tourList;
     }
 
     public void updateTour(String actualTourName,String tourDescription, String desTourName
@@ -168,7 +171,7 @@ public class BackendTourManager {
 
     }
 
-    public List<String> getToursFromSearch(String input)  throws TourDatabaseOperationException {
+    public List<Tour> getToursFromSearch(String input)  throws TourDatabaseOperationException {
         String selectSql="SELECT Distinct name FROM \"TourPlanner\".tour as t\n" +
                 "join \"TourPlanner\".\"tourLog\" as tL\n" +
                 "on t.\"id\" = tl.\"tourID\"\n" +
@@ -181,9 +184,16 @@ public class BackendTourManager {
             preparedStatement.setString(2,input);
 
             ResultSet resultSet=preparedStatement.executeQuery();
-            List<String> searchedTours = new ArrayList<String>();
+            List<Tour> searchedTours = new ArrayList<>();
             while (resultSet.next()){
-                searchedTours.add(resultSet.getString("name"));
+                Tour tour=new Tour();
+                tour.setTourName(resultSet.getString("name"));
+                tour.setTourDistance(resultSet.getDouble("tourDistance"));
+                tour.setTourDescription(resultSet.getString("tourDescription"));
+                tour.setRouteInformation(resultSet.getString("routeInformation"));
+                tour.setTourFrom(resultSet.getString("from"));
+                tour.setTourTo(resultSet.getString("to"));
+                searchedTours.add(tour);
             }
             return searchedTours;
         } catch (SQLException throwables) {

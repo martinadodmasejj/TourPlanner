@@ -38,9 +38,9 @@ public class TourListManager {
         }
     }
 
-    public void deleteTour (String tourName) throws TourListManagerException {
+    public void deleteTour (Tour tour) throws TourListManagerException {
         try {
-            model.deleteTour(tourName);
+            model.deleteTour(tour);
             log.debug("BL deleted Tour from List");
         } catch (ModelOperationException e) {
             throw new TourListManagerException("Could not delete Tour",e);
@@ -70,19 +70,20 @@ public class TourListManager {
     }
 
 
-    public List<String> getTours(){
-        if(model.getTours()==null){
-            return Collections.emptyList();
+    public List<Tour> getTours() throws TourListManagerException {
+        try {
+            if(model.getTours()==null){
+                return Collections.emptyList();
+            }
+            log.debug("BL returned all available Tours");
+            return model.getTours();
+        } catch (ModelOperationException e) {
+            throw new TourListManagerException("couldn't get Tour List from Backend",e);
         }
-        log.debug("BL returned all available Tours");
-        return model.getTours();
     }
 
-    public String generateTourRandomName(){
-        return model.generateTourRandomName();
-    }
 
-    public List<String> fullTextSearch(String input) throws TourListManagerException {
+    public List<Tour> fullTextSearch(String input) throws TourListManagerException {
         try {
             log.debug("BL performed full text search on Tours");
             return model.fullTextSearch(input);
