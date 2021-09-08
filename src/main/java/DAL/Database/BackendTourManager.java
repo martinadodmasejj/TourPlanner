@@ -128,20 +128,19 @@ public class BackendTourManager {
         return tourList;
     }
 
-    public void updateTour(String actualTourName,String tourDescription, String desTourName
-                        ,String routeInformation, String from, String to) throws TourDatabaseOperationException {
+    public void updateTour(String oldTourName,Tour newTour) throws TourDatabaseOperationException {
         String updateSql="update \"TourPlanner\".tour\n" +
                 "set \"name\"  = ?, \"tourDescription\" = ?, \"routeInformation\" = ?, \"from\" = ?, \"to\" = ? \n" +
                 " where \"name\" = ?";
         PreparedStatement preparedStatement= null;
         try {
             preparedStatement = dbInstance.getConnection().prepareStatement(updateSql);
-            preparedStatement.setString(1,desTourName);
-            preparedStatement.setString(2,tourDescription);
-            preparedStatement.setString(3,routeInformation);
-            preparedStatement.setString(4,from);
-            preparedStatement.setString(5,to);
-            preparedStatement.setString(6,actualTourName);
+            preparedStatement.setString(1,newTour.getTourName());
+            preparedStatement.setString(2,newTour.getTourDescription());
+            preparedStatement.setString(3,newTour.getRouteInformation());
+            preparedStatement.setString(4,newTour.getTourFrom());
+            preparedStatement.setString(5,newTour.getTourTo());
+            preparedStatement.setString(6,oldTourName);
             preparedStatement.executeUpdate();
             log.debug("TourAttributes Updated in Database");
         } catch (SQLException throwables) {

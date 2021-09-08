@@ -105,13 +105,11 @@ public class Model {
 
     }
 
-    public void updateTour(String actualTourName,String tourDescription, String desTourName
-            ,String routeInformation, double tourDistance, String from, String to) throws ModelOperationException {
+    public void updateTour(String oldTourName,Tour newTour) throws ModelOperationException {
         try {
-            backendTourManager.updateTour(actualTourName,tourDescription,desTourName,
-                    routeInformation,from,to);
+            backendTourManager.updateTour(oldTourName,newTour);
             log.debug("DAL Layer update TourDetails unconditionally");
-            backendTourManager.updateTourVectorToken(desTourName);
+            backendTourManager.updateTourVectorToken(newTour.getTourName());
             log.debug("Update Vector for Tour Indexing");
         } catch (TourDatabaseOperationException throwables) {
             throw new ModelOperationException("couldn't get update TourAttributes",throwables);
