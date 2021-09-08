@@ -152,20 +152,15 @@ public class MainViewModel {
             return;
         }
         String oldName = selectedListItem.getTourName();
-        String tourName=this.tourName.getValue();
-        String tourDescription=this.tourDescription.getValue();
-        String routeInformation=this.routeInformation.getValue();
-        double tourDistance= Double.parseDouble(this.tourDistance.getValue());
-        String from = this.fromDestination.get();
-        String to = this.toDestination.get();
+        String newTourName=this.tourName.getValue();
         selectedListItem.setTourName(this.tourName.getValue());
         selectedListItem.setTourDescription(this.tourDescription.getValue());
         selectedListItem.setRouteInformation(this.routeInformation.getValue());
         selectedListItem.setTourFrom(this.fromDestination.get());
         selectedListItem.setTourTo(this.toDestination.get());
-        tourListManager.updateTour(oldName,tourDescription,tourName,routeInformation,tourDistance,from,to);
+        tourListManager.updateTour(oldName,selectedListItem);
         saveTourPicture(selectedListItem);
-        if (tourName.equals(selectedListItem)){
+        if (newTourName.equals(selectedListItem)){
             return;
         }
         int curr_pos=tourList.indexOf(selectedListItem);
@@ -179,7 +174,7 @@ public class MainViewModel {
         Double distance = mapApiHandler.sendImageRequest(newTour.getTourFrom(),newTour.getTourTo(),newTour.getTourName());
         tourListManager.updateTourDistance(newTour.getTourName(),distance);
         newTour.setTourDistance(distance);
-        Image resultImage = new Image("file:src/main/resources/View/pictures/"+tourName+".jpg");
+        Image resultImage = new Image("file:src/main/resources/View/pictures/"+newTour.getTourName()+".jpg");
         tourImage.set(resultImage);
         log.debug("Set Picture from Http Request");
     }

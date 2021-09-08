@@ -47,11 +47,10 @@ public class TourListManager {
         }
     }
 
-    public void updateTour (String currentTour,String tourDescription,String tourName,String
-                            routeInformation, Double tourDistance,String from,String to) throws TourListManagerException {
+    public void updateTour (String oldTourName,Tour newTour) throws TourListManagerException {
 
         try {
-            model.updateTour(currentTour,tourDescription,tourName,routeInformation,tourDistance,from,to);
+            model.updateTour(oldTourName,newTour);
             log.debug("BL updated Tour in List");
         } catch (ModelOperationException e) {
             throw new TourListManagerException("Could not update TourAttributes",e);

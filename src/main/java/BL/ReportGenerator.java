@@ -147,7 +147,6 @@ public class ReportGenerator
 
                 HashMap<String,String> averages = calculateStatsTourLogs(tour.getTourName());
                 document.add(new Paragraph("Tour Logs Summary",subChapterFont));
-                document.add(new Paragraph(" "));
                 document.add(new Paragraph("Tour Logs Average Speed: "+averages.get("average Speed"),paragraphFont));
                 document.add(new Paragraph("Tour Logs Average Distance: "+averages.get("average Distance"),paragraphFont));
                 document.add(new Paragraph("Tour Logs Average Duration: "+averages.get("average Duration"),paragraphFont));
