@@ -21,15 +21,15 @@ import java.io.*;
 
 public class ReportGenerator
 {
-    TourListManager tourListManager;
-    TourLogManager tourLogManager;
+    TourListHandler tourListHandler;
+    TourLogHandler tourLogHandler;
     MapApiHandler httpHandler;
     Logger log;
 
     public ReportGenerator() throws ReportGeneratorException {
         try {
-            tourListManager = new TourListManager();
-            tourLogManager = new TourLogManager();
+            tourListHandler = new TourListHandler();
+            tourLogHandler = new TourLogHandler();
             httpHandler = new MapApiHandler();
             log = LogManager.getLogger(ReportGenerator.class);
         } catch (TourListManagerException | TourLogManagerException | MapApiHandlerException e) {
@@ -54,7 +54,7 @@ public class ReportGenerator
         Tour tourDetails= tour;
         String tourName = tour.getTourName();
         try {
-            List<TourLog> tourLogList = tourLogManager.getAllTourLogs(tourName);
+            List<TourLog> tourLogList = tourLogHandler.getAllTourLogs(tourName);
             log.debug("Collected all Tour Attributes and TourLogs for PDF Exporting");
             PdfWriter.getInstance(document, new FileOutputStream("TourReport_"+tourName+".pdf"));
             document.open();
@@ -116,13 +116,13 @@ public class ReportGenerator
 
     }
 
-    public void genereateTourSummaryReport() throws ReportGeneratorException {
+    public void generateTourSummaryReport() throws ReportGeneratorException {
 
         Document document = new Document();
 
         log.debug("Retrieved all Tour Infos and TourLogs for PDF Exporting");
         try {
-            List<Tour> tours = tourListManager.getAllToursAttributes();
+            List<Tour> tours = tourListHandler.getAllToursAttributes();
             PdfWriter.getInstance(document, new FileOutputStream("TourReport_AllTours.pdf"));
             document.open();
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA, 22, Font.BOLD);
@@ -169,10 +169,10 @@ public class ReportGenerator
 
     }
 
-    private HashMap<String,String> calculateStatsTourLogs(String tourName) throws ReportGeneratorException {
+    public HashMap<String,String> calculateStatsTourLogs(String tourName) throws ReportGeneratorException {
         List<TourLog> tourLogList = null;
         try {
-            tourLogList = tourLogManager.getAllTourLogs(tourName);
+            tourLogList = tourLogHandler.getAllTourLogs(tourName);
             Double tourLogsTotalSpeed=0.0;
             Double tourLogsTotalDistance=0.0;
             Double tourLogsTotalDuration=0.0;

@@ -3,7 +3,6 @@ package DAL.Database;
 import DAL.Exceptions.DatabaseInstanceException;
 import DAL.Exceptions.TourDatabaseOperationException;
 import DAL.Exceptions.TourLogDatabaseOperationException;
-import DAL.Local.LocalTourList;
 import DATATYPES.Tour;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,15 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BackendTourManager {
+public class DatabaseTourHandler {
     DatabaseConnection dbInstance;
     private final Logger log;
-    BackendTourLogManager tourLogManager;
+    DatabaseTourLogHandler tourLogManager;
 
-    public BackendTourManager() throws TourLogDatabaseOperationException , DatabaseInstanceException {
+    public DatabaseTourHandler() throws TourLogDatabaseOperationException , DatabaseInstanceException {
 
-        log = LogManager.getLogger(BackendTourManager.class);
-        tourLogManager = new BackendTourLogManager();
+        log = LogManager.getLogger(DatabaseTourHandler.class);
+        tourLogManager = new DatabaseTourLogHandler();
         dbInstance = DatabaseConnection.getDatabaseInstance();
 
     }
@@ -49,6 +48,10 @@ public class BackendTourManager {
         } catch (SQLException throwables) {
             throw new TourDatabaseOperationException("Couldn't create new Tour",throwables);
         }
+    }
+
+    private void addTourVectorToken(String tourName){
+
     }
 
 
@@ -171,7 +174,7 @@ public class BackendTourManager {
     }
 
     public List<Tour> getToursFromSearch(String input)  throws TourDatabaseOperationException {
-        String selectSql="SELECT Distinct name FROM \"TourPlanner\".tour as t\n" +
+        String selectSql="SELECT Distinct * FROM \"TourPlanner\".tour as t\n" +
                 "join \"TourPlanner\".\"tourLog\" as tL\n" +
                 "on t.\"id\" = tl.\"tourID\"\n" +
                 "WHERE  t.\"tourToken\"  @@ to_tsquery(?)\n" +

@@ -23,16 +23,16 @@ import org.apache.logging.log4j.core.config.Configurator;
 public class MapApiHandler {
     String key;
     private final Logger log;
-    TourListManager tourListManager;
+    TourListHandler tourListHandler;
 
     public MapApiHandler() throws MapApiHandlerException {
         key = "sbA2AG4PAtKsucb54CDBLp8YOsxS8oL1";
         Configurator.initialize(null, "TourPlannerLog4j.conf.xml");
         log = LogManager.getLogger(MapApiHandler.class);
         try {
-            tourListManager = new TourListManager();
+            tourListHandler = new TourListHandler();
         } catch (TourListManagerException e) {
-            throw new MapApiHandlerException("could not get tourListManager Interface", e);
+            throw new MapApiHandlerException("could not get tourListHandler Interface", e);
         }
     }
 
@@ -84,7 +84,7 @@ public class MapApiHandler {
         Double distanceValue = route.getDouble("distance");
 
         try {
-            tourListManager.updateTourDistance(tourName, distanceValue);
+            tourListHandler.updateTourDistance(tourName, distanceValue);
         } catch (TourListManagerException e) {
             throw new MapApiHandlerException("could not update Tour Distance", e);
         }

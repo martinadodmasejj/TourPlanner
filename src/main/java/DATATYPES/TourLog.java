@@ -18,7 +18,7 @@ public class TourLog {
     String timestamp;
 
     private void initRatingSlider(int rating){
-        this.ratingSlider = new JFXSlider();
+
         this.ratingSlider.setValue(rating);
         this.ratingSlider.setMax(5);
         this.ratingSlider.setMin(0);
@@ -34,7 +34,6 @@ public class TourLog {
         this.duration = 0.0;
         this.date = "";
         this.rating = 0;
-        initRatingSlider(rating);
         this.avgSpeed = 0.0;
         this.author = "anonymous";
         this.remarks = "";

@@ -10,24 +10,20 @@ import org.apache.logging.log4j.Logger;
 import java.util.Collections;
 import java.util.List;
 
-public class TourListManager {
+public class TourListHandler {
 
     private Model model;
     private Logger log;
 
-    public TourListManager() throws TourListManagerException {
+    public TourListHandler() throws TourListManagerException {
         try {
             model=Model.getModelInstance();
-            log = LogManager.getLogger(TourListManager.class);
+            log = LogManager.getLogger(TourListHandler.class);
         } catch (ModelOperationException e) {
             throw new TourListManagerException("Could not get DAL ModelInterface",e);
         }
     }
-    public TourListManager(boolean test) {
-        if (test) {
-            model = Model.getTestModelInstance();
-        }
-    }
+
 
     public void addTour (Tour newTour) throws TourListManagerException {
         try {

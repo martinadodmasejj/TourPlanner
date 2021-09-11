@@ -10,17 +10,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BackendTourLogManager {
+public class DatabaseTourLogHandler {
     DatabaseConnection dbInstance;
     private final Logger log;
 
-    public BackendTourLogManager() throws TourLogDatabaseOperationException {
+    public DatabaseTourLogHandler() throws TourLogDatabaseOperationException {
         try {
             dbInstance = DatabaseConnection.getDatabaseInstance();
         } catch (DatabaseInstanceException e) {
             throw new TourLogDatabaseOperationException("Could not read config Database file",e);
         }
-        log = LogManager.getLogger(BackendTourLogManager.class);
+        log = LogManager.getLogger(DatabaseTourLogHandler.class);
     }
 
     public void addTourLog(int tourID) throws TourLogDatabaseOperationException {
@@ -82,7 +82,7 @@ public class BackendTourLogManager {
             throw new TourLogDatabaseOperationException("Error getting all TourLogs for Tour from Database",throwables);
         }
         if(tourLogList.isEmpty()){
-            return null;
+            return tourLogList;
         }
         return tourLogList;
     }
