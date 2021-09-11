@@ -8,12 +8,9 @@ import DATATYPES.TourLog;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.SelectionModel;
-import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,8 +21,8 @@ import javafx.beans.value.ChangeListener;
 
 public class MainViewModel {
 
-    private TourListManager tourListManager;
-    private TourLogManager tourLogManager;
+    private TourListHandler tourListHandler;
+    private TourLogHandler tourLogHandler;
     private final Logger log;
     ReportGenerator reportGenerator =null;
 
@@ -47,14 +44,13 @@ public class MainViewModel {
 
     private Tour selectedListItem=null;
     private TourLog selectedLog=null;
-    private Tab selectedTab=null;
 
     public MainViewModel() throws TourLogManagerException, TourListManagerException, MapApiHandlerException {
         Configurator.initialize(null, "TourPlannerLog4j.conf.xml");
         log = LogManager.getLogger(MainViewModel.class);
-        tourListManager = new TourListManager();
-        tourLogManager = new TourLogManager();
-        tourList = FXCollections.observableArrayList(tourListManager.getTours());
+        tourListHandler = new TourListHandler();
+        tourLogHandler = new TourLogHandler();
+        tourList = FXCollections.observableArrayList(tourListHandler.getTours());
     }
 
 
@@ -132,7 +128,7 @@ public class MainViewModel {
         newTour.setRouteInformation(routeInformation.getValue());
         newTour.setTourTo(toDestination.getValue());
         newTour.setTourFrom(fromDestination.getValue());
-        tourListManager.addTour(newTour);
+        tourListHandler.addTour(newTour);
         tourList.add(newTour);
         log.debug("MVM Tour Insertion");
         if (newTour.getTourTo()!=null && newTour.getTourFrom()!=null){
@@ -142,7 +138,7 @@ public class MainViewModel {
 
     public void deleteTour() throws TourListManagerException {
         deleteTourPicture();
-        tourListManager.deleteTour(selectedListItem);
+        tourListHandler.deleteTour(selectedListItem);
         tourList.remove(selectedListItem);
         log.debug("MVVM Tour Deletion");
     }
@@ -158,7 +154,7 @@ public class MainViewModel {
         selectedListItem.setRouteInformation(this.routeInformation.getValue());
         selectedListItem.setTourFrom(this.fromDestination.get());
         selectedListItem.setTourTo(this.toDestination.get());
-        tourListManager.updateTour(oldName,selectedListItem);
+        tourListHandler.updateTour(oldName,selectedListItem);
         saveTourPicture(selectedListItem);
         if (newTourName.equals(selectedListItem)){
             return;
@@ -172,7 +168,7 @@ public class MainViewModel {
     private void saveTourPicture(Tour newTour) throws MapApiHandlerException, TourListManagerException {
         log.debug("MVVM send TourPicture request");
         Double distance = mapApiHandler.sendImageRequest(newTour.getTourFrom(),newTour.getTourTo(),newTour.getTourName());
-        tourListManager.updateTourDistance(newTour.getTourName(),distance);
+        tourListHandler.updateTourDistance(newTour.getTourName(),distance);
         newTour.setTourDistance(distance);
         Image resultImage = new Image("file:src/main/resources/View/pictures/"+newTour.getTourName()+".jpg");
         tourImage.set(resultImage);
@@ -211,13 +207,13 @@ public class MainViewModel {
         if (reportGenerator == null){
             reportGenerator = new ReportGenerator();
         }
-        reportGenerator.genereateTourSummaryReport();
+        reportGenerator.generateTourSummaryReport();
     }
 
     public void searchTours() throws TourListManagerException {
-        List<Tour> tours=tourListManager.fullTextSearch(searchField.get());
+        List<Tour> tours= tourListHandler.fullTextSearch(searchField.get());
         if(searchField.get().isEmpty()){
-            tours = tourListManager.getTours();
+            tours = tourListHandler.getTours();
             tourList.clear();
             tourList.addAll(tours);
             return;
@@ -228,64 +224,64 @@ public class MainViewModel {
 
     public void addTourLog() throws TourLogManagerException {
         if (selectedListItem != null){
-            tourLogManager.addTourLog(selectedListItem.getTourName());
+            tourLogHandler.addTourLog(selectedListItem.getTourName());
             getAllTourLogs();
         }
     }
 
     public void deleteTourLog() throws TourLogManagerException {
         if (selectedLog != null && selectedListItem != null){
-            tourLogManager.deleteTourLog(selectedLog.getTimestamp());
+            tourLogHandler.deleteTourLog(selectedLog.getTimestamp());
             getAllTourLogs();
         }
     }
 
     public void getAllTourLogs() throws TourLogManagerException {
         if (selectedListItem != null){
-            tourLogs=FXCollections.observableArrayList(tourLogManager.getAllTourLogs(selectedListItem.getTourName()));
+            tourLogs=FXCollections.observableArrayList(tourLogHandler.getAllTourLogs(selectedListItem.getTourName()));
             tourLogsTable.set(tourLogs);
         }
     }
 
     public void updateTourLogAuthor(String value) throws TourLogManagerException {
         selectedLog.setAuthor(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
     public void updateTourLogReport(String value) throws TourLogManagerException {
         selectedLog.setLogReport(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
 
     public void updateTourLogDistance(Double value) throws TourLogManagerException {
         selectedLog.setTraveledDistance(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
 
     public void updateTourLogTime(Double value) throws TourLogManagerException {
         selectedLog.setDuration(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
 
     public void updateTourLogRating(Integer value) throws TourLogManagerException {
         selectedLog.setRating(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
     public void updateTourLogAvgSpeed(Double value) throws TourLogManagerException {
         selectedLog.setAvgSpeed(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
 
     public void updateTourLogRemarks(String value) throws TourLogManagerException {
         selectedLog.setRemarks(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
     public void updateTourLogWeather(String value) throws TourLogManagerException {
         selectedLog.setWeather(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
     public void updateTourLogJoule(Integer value) throws TourLogManagerException {
         selectedLog.setJoule(value);
-        tourLogManager.updateTourLog(selectedLog);
+        tourLogHandler.updateTourLog(selectedLog);
     }
 
 }

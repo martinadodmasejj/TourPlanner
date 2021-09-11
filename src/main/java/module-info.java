@@ -31,8 +31,6 @@ module org.openjfx {
     opens VIEW to javafx.fxml;
     exports DAL.Database;
     opens DAL.Database to javafx.fxml;
-    exports DAL.Local;
-    opens DAL.Local to javafx.fxml;
     exports DATATYPES;
     opens DATATYPES to javafx.fxml;
 }

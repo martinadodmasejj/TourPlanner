@@ -20,82 +20,69 @@ public class ModelTest {
         //Arrange
         Model dataModelBackend = Model.getModelInstance();
         Tour testTour = new Tour("tourTest");
-        List<String> tourList;
+        List<Tour> tourList;
         //Act
         dataModelBackend.addTour(testTour);
-        //tourList=dataModelBackend.getTours();
-        //dataModelBackend.deleteTour("tourTest"); // Cleanup
-        //Assert
-        //Assert.assertEquals("tourTest",tourList.get(tourList.size()-1));
-    }
-
-    @Test
-    public void testRandomGeneration() {
-        //Arrange
-        Model dataModelBackend = Model.getTestModelInstance();
-        String randomName="";
-        String generatedName = "";
-        Boolean matches=false;
-        //Act
-        for (int i=0;i<100;i++){
-           // generatedName = dataModelBackend.generateTourRandomName();
-            if(randomName.equals(generatedName)){
-                matches=true;
-                break;
+        tourList=dataModelBackend.getTours();
+        dataModelBackend.deleteTour(testTour);// Cleanup
+        boolean tourExists = false;
+        for(Tour tour : tourList){
+            if (tour.getTourName().equals("tourTest")){
+                tourExists = true;
             }
-
         }
         //Assert
-        Assert.assertEquals(false,matches);
+        Assert.assertEquals(true,tourExists);
     }
 
-/* todo after improving LocalTourList */
+
+
     @Test
     public void testTourUpdate() throws ModelOperationException {
         //Arrange
         Model dataModelBackend = Model.getModelInstance();
-        String tourTest="TestTour";
-        Tour tourDetails;
+        Tour testTour = new Tour("tourTest");
         //Act
-        //dataModelBackend.addTour(tourTest);
-       // dataModelBackend.updateTour(tourTest,"testDescription"
-            //    ,"NewName","TestRoute",100);
-        tourDetails=dataModelBackend.getTourDetails(0,"NewName");
-        //dataModelBackend.deleteTour("NewName");
+        dataModelBackend.addTour(testTour);
+        testTour.setTourName("tourTestUpdate");
+        testTour.setTourDescription("testDescription");
+        dataModelBackend.updateTour("tourTest",testTour);
+        Tour resultTour = dataModelBackend.getTourDetails(0,"tourTestUpdate");
+        dataModelBackend.deleteTour(testTour);
         //Assert
-        Assert.assertEquals("NewName",tourDetails.getTourName());
-        Assert.assertEquals("testDescription",tourDetails.getTourDescription());
-        Assert.assertEquals("TestRoute",tourDetails.getRouteInformation());
-        Assert.assertEquals("100.0",String.valueOf(tourDetails.getTourDistance()));
+        Assert.assertEquals("testDescription",resultTour.getTourDescription());
     }
 
-    @Test
-    public void testGetTourRoute() throws ModelOperationException {
-        //Arrange
-        Model dataModelBackend = Model.getModelInstance();
-        String tourTest="TestTour";
-        //Act
-        //dataModelBackend.addTour(tourTest);
-        //dataModelBackend.updateTourRoute(tourTest,"Wien","Berlin");
-        Tour tourDetails = dataModelBackend.getTourDetails(0,tourTest);
-        //dataModelBackend.deleteTour(tourTest);
-        //Assert
-        Assert.assertEquals("Wien",tourDetails.getTourFrom());
-        Assert.assertEquals("Berlin",tourDetails.getTourTo());
-    }
 
     @Test
     public void testTourDistanceUpdate() throws ModelOperationException {
         //Arrange
         Model dataModelBackend = Model.getModelInstance();
-        String tourTest="TestTour";
+        Tour testTour= new Tour("TestTour");
         //Act
-        //dataModelBackend.addTour(tourTest);
-        dataModelBackend.updateDistance("TestTour",100.69);
-        Tour tourDetails = dataModelBackend.getTourDetails(0,tourTest);
-        //dataModelBackend.deleteTour(tourTest);
+        dataModelBackend.addTour(testTour);
+        dataModelBackend.updateDistance("TestTour",10.1);
+        Tour tourDetails = dataModelBackend.getTourDetails(0,"TestTour");
+        dataModelBackend.deleteTour(testTour);
         //Assert
-        Assert.assertEquals(String.valueOf(tourDetails.getTourDistance()),"100.69");
+        Assert.assertEquals("10.1",String.valueOf(tourDetails.getTourDistance()));
+    }
+
+    @Test
+    public void testGetTourDetails() throws ModelOperationException{
+        //Arrange
+        Model dataModelBackend = Model.getModelInstance();
+        Tour testTour= new Tour("TestTour");
+        testTour.setTourTo("Wien");
+        testTour.setTourFrom("Berlin");
+        //Act
+        dataModelBackend.addTour(testTour);
+        Tour tourDetails = dataModelBackend.getTourDetails(0,"TestTour");
+        dataModelBackend.deleteTour(testTour);
+        //
+        Assert.assertEquals("Wien",tourDetails.getTourTo());
+        Assert.assertEquals("Berlin",tourDetails.getTourFrom());
+
     }
 
 
