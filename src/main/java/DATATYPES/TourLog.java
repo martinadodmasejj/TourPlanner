@@ -9,24 +9,12 @@ public class TourLog {
     double duration;
     String date;
     int rating;
-    JFXSlider ratingSlider;
     double avgSpeed;
     String author;
     String remarks;
     int joule;
     String weather;
     String timestamp;
-
-    private void initRatingSlider(int rating){
-
-        this.ratingSlider.setValue(rating);
-        this.ratingSlider.setMax(5);
-        this.ratingSlider.setMin(0);
-        this.ratingSlider.setMajorTickUnit(1);
-        this.ratingSlider.setMinorTickCount(1);
-        this.ratingSlider.setSnapToTicks(true);
-        this.ratingSlider.setBlockIncrement(1);
-    }
 
     public TourLog(){
         this.logReport = "";
@@ -50,7 +38,6 @@ public class TourLog {
         this.date = date;
         this.rating = rating;
         this.avgSpeed = avgSpeed;
-        initRatingSlider(rating);
         this.author = author;
         this.remarks = specialRemarks;
         this.joule = joule;

@@ -43,9 +43,6 @@ public class DatabaseConnection {
         } catch (IOException ioException) {
             throw new DatabaseInstanceException("could not read config file",ioException);
         }
-
-
-
     }
 
     public void initialize()  throws DatabaseInstanceException{
