@@ -38,11 +38,6 @@ public class Model {
         //tours=new ArrayList<>();
     }
 
-    private Model(boolean Test){
-        if (Test){
-            databaseTourHandler =null;
-        }
-    }
 
 
     public static Model getModelInstance() throws ModelOperationException {

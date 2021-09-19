@@ -67,7 +67,6 @@ public class DatabaseTourLogHandler {
                 tourLog.setLogReport(resultSet.getString("logReport"));
                 tourLog.setTraveledDistance(resultSet.getDouble("traveledDistance"));
                 tourLog.setDuration(resultSet.getDouble("totalTime"));
-                tourLog.setDate(resultSet.getString("timestamp"));
                 tourLog.setRating(resultSet.getInt("rating"));
                 tourLog.setAvgSpeed(resultSet.getDouble("avgSpeed"));
                 tourLog.setAuthor(resultSet.getString("author"));
@@ -101,7 +100,6 @@ public class DatabaseTourLogHandler {
                 tourLog.setLogReport(resultSet.getString("logReport"));
                 tourLog.setTraveledDistance(resultSet.getDouble("traveledDistance"));
                 tourLog.setDuration(resultSet.getDouble("totalTime"));
-                tourLog.setDate(String.valueOf(resultSet.getTimestamp("timestamp")));
                 tourLog.setRating(resultSet.getInt("rating"));
                 tourLog.setAvgSpeed(resultSet.getDouble("avgSpeed"));
                 tourLog.setAuthor(resultSet.getString("author"));

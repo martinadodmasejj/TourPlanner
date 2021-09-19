@@ -1,13 +1,11 @@
 package DATATYPES;
 
-import com.jfoenix.controls.JFXSlider;
 
 public class TourLog {
 
     String logReport;
     double traveledDistance;
     double duration;
-    String date;
     int rating;
     double avgSpeed;
     String author;
@@ -20,7 +18,6 @@ public class TourLog {
         this.logReport = "";
         this.traveledDistance = 0.0;
         this.duration = 0.0;
-        this.date = "";
         this.rating = 0;
         this.avgSpeed = 0.0;
         this.author = "anonymous";
@@ -30,18 +27,18 @@ public class TourLog {
     }
 
 
-    public TourLog(String logReport, double traveledDistance, double duration, String date, int rating,
-                   double avgSpeed, String author, String specialRemarks, int joule, String weather) {
+    public TourLog(String logReport, double traveledDistance, double duration, int rating,
+                   double avgSpeed, String author, String specialRemarks, int joule, String weather,String timestamp) {
         this.logReport = logReport;
         this.traveledDistance = traveledDistance;
         this.duration = duration;
-        this.date = date;
         this.rating = rating;
         this.avgSpeed = avgSpeed;
         this.author = author;
         this.remarks = specialRemarks;
         this.joule = joule;
         this.weather = weather;
+        this.timestamp = timestamp;
     }
 
     public String getTimestamp() {
@@ -74,14 +71,6 @@ public class TourLog {
 
     public void setDuration(double duration) {
         this.duration = duration;
-    }
-
-    public String getDate () {
-        return date;
-    }
-
-    public void setDate (String date) {
-        this.date = date;
     }
 
     public int getRating() {
