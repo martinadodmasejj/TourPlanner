@@ -43,7 +43,7 @@ public class Controller implements Initializable {
     public Tab logTab;
 
     public TableView tourLogsTable;
-    public TableColumn dateColumn;
+    public TableColumn timestampColumn;
     public TableColumn reportColumn;
     public TableColumn distanceColumn;
     public TableColumn timeColumn;
@@ -200,7 +200,7 @@ public class Controller implements Initializable {
 
 
     private void initializeLogTable(){
-        dateColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("date"));
+        timestampColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("timestamp"));
         ratingColumn.setCellValueFactory(new PropertyValueFactory<TourLog,Integer>("rating"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<TourLog,Double>("duration"));
         distanceColumn.setCellValueFactory(new PropertyValueFactory<TourLog,String>("traveledDistance"));
@@ -215,7 +215,7 @@ public class Controller implements Initializable {
 
     private void initializeEditableTable(){
         reportColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        ratingColumn.setCellFactory(TextFieldTableCell.forTableColumn(new CustomIntegerStringConverter()));
+        ratingColumn.setCellFactory(TextFieldTableCell.forTableColumn(new CustomRatingStringConverter()));
         timeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new CustomDoubleStringConverter()));
         distanceColumn.setCellFactory(TextFieldTableCell.forTableColumn(new CustomDoubleStringConverter()));
         authorColumn.setCellFactory(TextFieldTableCell.forTableColumn());

@@ -256,7 +256,7 @@
                                                       <TableView fx:id="tourLogsTable" editable="true" maxHeight="1000" prefHeight="600.0" prefWidth="1610.0" tableMenuButtonVisible="true">
                                                          <columns>
                                                             <TableColumn fx:id="authorColumn" editable="true" minWidth="200.0" onEditCommit="#updateTourLogAuthor" prefWidth="200.0" resizable="true" text="author" />
-                                                            <TableColumn fx:id="dateColumn" editable="false" minWidth="118.0" prefWidth="225.0" resizable="true" text="date" />
+                                                            <TableColumn fx:id="timestampColumn" editable="false" minWidth="118.0" prefWidth="225.0" resizable="true" text="timestamp" />
                                                             <TableColumn fx:id="reportColumn" editable="true" minWidth="200" onEditCommit="#updateTourLogReport" resizable="true" text="report" />
                                                             <TableColumn fx:id="distanceColumn" editable="true" minWidth="200" onEditCommit="#updateTourLogDistance" resizable="true" text="distance" />
                                                             <TableColumn fx:id="timeColumn" editable="true" minWidth="200" onEditCommit="#updateTourLogTime" resizable="true" text="total time" />

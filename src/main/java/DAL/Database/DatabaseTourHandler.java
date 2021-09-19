@@ -174,7 +174,7 @@ public class DatabaseTourHandler {
     }
 
     public List<Tour> getToursFromSearch(String input)  throws TourDatabaseOperationException {
-        String selectSql="SELECT Distinct * FROM \"TourPlanner\".tour as t\n" +
+        String selectSql="SELECT Distinct ON (t.name) * FROM \"TourPlanner\".tour as t\n" +
                 "join \"TourPlanner\".\"tourLog\" as tL\n" +
                 "on t.\"id\" = tl.\"tourID\"\n" +
                 "WHERE  t.\"tourToken\"  @@ to_tsquery(?)\n" +
